@@ -1,3 +1,6 @@
 {
-    "worldClocks": "World Clocks"
+    "description": "Display clocks for different time zones in the status bar",
+    "hour12": "12 hours",
+    "showSecond": "Show second",
+    "worldClocks": "World clocks"
 }

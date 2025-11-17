@@ -1,7 +1,7 @@
 {
   "name": "clocks",
   "displayName": "Clocks",
-  "description": "Display clocks at status bar",
+  "description": "%description%",
   "repository": "https://github.com/lar-ry/clocks",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
@@ -21,6 +21,16 @@
     "configuration": {
       "title": "Clocks",
       "properties": {
+        "clocks.showSecond": {
+          "type": "boolean",
+          "description": "%showSecond%",
+          "default": false
+        },
+        "clocks.hour12": {
+          "type": "boolean",
+          "description": "%hour12%",
+          "default": false
+        },
         "clocks.worldClocks": {
           "type": "array",
           "description": "%worldClocks%",
