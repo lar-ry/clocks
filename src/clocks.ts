@@ -1,3 +1,4 @@
+import { title } from "process";
 import {
   ExtensionContext,
   workspace,
@@ -39,7 +40,11 @@ const update = (item: StatusBarItem) => {
 
   item.tooltip = new MarkdownString(tips.join("\n"));
   item.show();
-  item.command = "larry-lan.clocks.noop";
+  item.command = {
+    command: "workbench.action.openSettings",
+    title: "openSettings",
+    arguments: ["@ext:larry-lan.clocks"],
+  };
 };
 
 export function createStatusBarClocks(context: ExtensionContext) {

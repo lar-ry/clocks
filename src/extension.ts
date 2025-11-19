@@ -2,9 +2,6 @@ import * as vscode from "vscode";
 import { createStatusBarClocks } from "./clocks";
 
 export function activate(context: vscode.ExtensionContext) {
-  context.subscriptions.push(
-    vscode.commands.registerCommand("larry-lan.clocks.noop", () => {})
-  );
   context.subscriptions.push(createStatusBarClocks(context));
 }
 
