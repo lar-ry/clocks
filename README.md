@@ -25,7 +25,7 @@ Display clocks for different time zones in the status bar
 
 After installing the extension, the current time will appear on the right side of the status bar
 
-安装插件后, 在状态栏右侧即可显示始终
+安装插件后, 在状态栏右侧即可显示时钟
 
 ## Setting - 设置
 

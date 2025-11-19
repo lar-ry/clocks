@@ -1,4 +1,3 @@
-import { title } from "process";
 import {
   ExtensionContext,
   workspace,
@@ -48,7 +47,10 @@ const update = (item: StatusBarItem) => {
 };
 
 export function createStatusBarClocks(context: ExtensionContext) {
-  const statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right);
+  const statusBarItem = window.createStatusBarItem(
+    StatusBarAlignment.Right,
+    -Infinity
+  );
 
   const timer = setInterval(() => update(statusBarItem), 1000);
 
