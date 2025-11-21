@@ -1,6 +1,12 @@
 {
     "description": "在状态栏显示不同时区的时钟",
-    "showSecond": "显示秒",
     "hour12": "12 小时制",
+    "language": "语言",
+    "long": "长",
+    "narrow": "极简",
+    "null": "不显示",
+    "short": "短",
+    "showSecond": "显示秒",
+    "weekday": "周格式",
     "worldClocks": "世界时钟"
 }

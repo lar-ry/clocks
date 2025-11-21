@@ -29,6 +29,8 @@ After installing the extension, the current time will appear on the right side o
 
 ## Setting - 设置
 
+- `weekday`: Weekday - 周格式
+- `language`: Language - 语言
 - `hour12`: 12 hours - 12 小时制
 - `showSecond`: Show second - 显示秒
 - `worldClocks`: World clocks - 世界时钟

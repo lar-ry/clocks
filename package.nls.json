@@ -1,6 +1,12 @@
 {
     "description": "Display clocks for different time zones in the status bar",
     "hour12": "12 hours",
+    "language": "Language",
+    "long": "Long",
+    "narrow": "Narrow",
+    "null": "No display",
+    "short": "Short",
     "showSecond": "Show second",
+    "weekday": "Weekday",
     "worldClocks": "World clocks"
 }

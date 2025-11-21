@@ -21,6 +21,36 @@
     "configuration": {
       "title": "Clocks",
       "properties": {
+        "clocks.language": {
+          "type": "string",
+          "description": "%language%",
+          "enum": [
+            "en",
+            "zh-cn"
+          ],
+          "enumItemLabels": [
+            "English",
+            "中文(简体)"
+          ],
+          "default": "en"
+        },
+        "clocks.weekday": {
+          "type": "string",
+          "enum": [
+            "long",
+            "short",
+            "narrow",
+            null
+          ],
+          "enumItemLabels": [
+            "%long%",
+            "%short%",
+            "%narrow%",
+            "%null%"
+          ],
+          "description": "%weekday%",
+          "default": "short"
+        },
         "clocks.showSecond": {
           "type": "boolean",
           "description": "%showSecond%",

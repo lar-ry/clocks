@@ -11,14 +11,14 @@ import {
 const update = (item: StatusBarItem) => {
   const config = workspace.getConfiguration("clocks");
   const now = new Date();
-  const locale = "zh-CN";
   const baseOptions = {
     hour: "2-digit",
     minute: "2-digit",
     hour12: config.hour12,
+    weekday: config.weekday || undefined,
   };
   const tips = [undefined, ...config.worldClocks]?.map((x: string) => {
-    const time = now.toLocaleString(locale, {
+    const time = now.toLocaleString(config.language, {
       timeZone: x,
       year: "numeric",
       month: "2-digit",
@@ -26,13 +26,13 @@ const update = (item: StatusBarItem) => {
       ...baseOptions,
     } as Intl.DateTimeFormatOptions);
     if (x) {
-      return `- ${time} (${x})`;
+      return `\n- ${time} (${x})`;
     } else {
-      return `- **${time} (${l10n.t("Local time")})**\n\n---`;
+      return `- **${time} (${l10n.t("Local time")})**`;
     }
   });
 
-  item.text = now.toLocaleString(locale, {
+  item.text = now.toLocaleString(config.language, {
     second: config.showSecond ? "2-digit" : undefined,
     ...baseOptions,
   } as Intl.DateTimeFormatOptions);
