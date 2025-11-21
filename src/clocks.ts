@@ -25,17 +25,13 @@ const update = (item: StatusBarItem) => {
       day: "2-digit",
       ...baseOptions,
     } as Intl.DateTimeFormatOptions);
-    if (x) {
-      return `\n- ${time} (${x})`;
-    } else {
-      return `- **${time} (${l10n.t("Local time")})**`;
-    }
+    return `${time} (${x ?? l10n.t("Local time")})`;
   });
   item.text = now.toLocaleString(config.language, {
     second: config.showSecond ? "2-digit" : undefined,
     ...baseOptions,
   } as Intl.DateTimeFormatOptions);
-  item.tooltip = new MarkdownString(tips.join("\n"));
+  item.tooltip = new MarkdownString(tips.join("  \n"));
 };
 const startClock = (item: StatusBarItem, context: ExtensionContext) => {
   let disposed = false;
