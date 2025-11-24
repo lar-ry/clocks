@@ -7,7 +7,6 @@
     "description": "Display clocks for multiple time zones in the status bar and support setting alarms",
     "enable": "Enable",
     "hour12": "12 hours",
-    "language": "Language",
     "long": "Long",
     "narrow": "Narrow",
     "null": "No display",

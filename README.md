@@ -30,7 +30,6 @@ After installing the extension, the current time will appear on the right side o
 ## Setting - 设置
 
 - `enable`: Enable - 使能
-- `language`: Language - 语言
 - `hour12`: 12 hours - 12 小时制
 - `worldClocks`: World clocks - 世界时钟
 - `alarms.list`: Alarms list - 闹钟列表

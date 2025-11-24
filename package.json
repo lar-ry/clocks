@@ -44,19 +44,6 @@
           "description": "%enable%",
           "default": true
         },
-        "clocks.language": {
-          "type": "string",
-          "description": "%language%",
-          "enum": [
-            "en",
-            "zh-cn"
-          ],
-          "enumItemLabels": [
-            "English",
-            "中文(简体)"
-          ],
-          "default": "en"
-        },
         "clocks.clock.weekday": {
           "type": "string",
           "enum": [

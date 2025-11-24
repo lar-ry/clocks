@@ -7,7 +7,6 @@
     "description": "在状态栏显示不同时区的时钟并支持设置闹钟",
     "enable": "使能",
     "hour12": "12 小时制",
-    "language": "语言",
     "long": "长",
     "narrow": "极简",
     "null": "不显示",

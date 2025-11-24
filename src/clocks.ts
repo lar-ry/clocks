@@ -8,6 +8,7 @@ import {
   WorkspaceConfiguration,
   l10n,
   ThemeColor,
+  env,
 } from "vscode";
 
 const getTimeLocaleString = ({
@@ -21,7 +22,7 @@ const getTimeLocaleString = ({
   timeZone?: string;
   isText?: boolean;
 }) => {
-  return time.toLocaleString(config.language, {
+  return time.toLocaleString(env.language, {
     timeZone,
     hour: "2-digit",
     minute: "2-digit",
