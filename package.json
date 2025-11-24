@@ -5,7 +5,7 @@
   "repository": "https://github.com/lar-ry/clocks",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -21,18 +21,28 @@
     "configuration": {
       "title": "Clocks",
       "properties": {
-        "clocks.alarms": {
+        "clocks.alarms.list": {
           "type": "object",
-          "description": "%alarms%",
+          "description": "%alarms.list%",
           "propertyNames": {
             "type": "string",
             "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$",
-            "errorMessage": "%alarms.errorMessage%"
+            "errorMessage": "%alarms.list.errorMessage%"
           },
           "additionalProperties": {
             "type": "string"
           },
           "default": {}
+        },
+        "clocks.alarms.enable": {
+          "type": "boolean",
+          "description": "%alarms.enable%",
+          "default": true
+        },
+        "clocks.enable": {
+          "type": "boolean",
+          "description": "%enable%",
+          "default": true
         },
         "clocks.language": {
           "type": "string",
@@ -47,7 +57,7 @@
           ],
           "default": "en"
         },
-        "clocks.weekday": {
+        "clocks.clock.weekday": {
           "type": "string",
           "enum": [
             "long",
@@ -61,12 +71,12 @@
             "%narrow%",
             "%null%"
           ],
-          "description": "%weekday%",
+          "description": "%clock.weekday%",
           "default": "short"
         },
-        "clocks.showSecond": {
+        "clocks.clock.showSecond": {
           "type": "boolean",
-          "description": "%showSecond%",
+          "description": "%clock.showSecond%",
           "default": false
         },
         "clocks.hour12": {

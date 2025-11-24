@@ -17,9 +17,9 @@
 
 # Clocks - 时钟
 
-Display clocks for different time zones in the status bar
+Display clocks for multiple time zones in the status bar and support setting alarms
 
-在状态栏显示不同时区的时钟
+在状态栏显示不同时区的时钟并支持设置闹钟
 
 ## Quick Start - 使用方法
 
@@ -29,8 +29,11 @@ After installing the extension, the current time will appear on the right side o
 
 ## Setting - 设置
 
-- `weekday`: Weekday - 周格式
+- `enable`: Enable - 使能
 - `language`: Language - 语言
 - `hour12`: 12 hours - 12 小时制
-- `showSecond`: Show second - 显示秒
 - `worldClocks`: World clocks - 世界时钟
+- `alarms.list`: Alarms list - 闹钟列表
+- `alarms.enable`: Alarms enable - 闹钟使能
+- `clock.weekday`: Weekday - 周格式
+- `clock.showSecond`: Show second - 显示秒
