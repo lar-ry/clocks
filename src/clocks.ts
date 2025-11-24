@@ -56,9 +56,9 @@ const update = (item: StatusBarItem) => {
   );
   const alarmsTips = Object.entries(config.alarms.list).map(([k, v]) => {
     if (/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/.test(k)) {
-      return nowHourMinute === k ? `**${k} (${v})**` : `${k} (${v})`;
+      return nowHourMinute === k ? `**${k} ${v}**` : `${k} ${v}`;
     }
-    return `~~${k} (${v})~~`;
+    return `~~${k} ${v} (${l10n.t("Invalid time")})~~`;
   });
 
   item.text = getTimeLocaleString({ config, time: now, isText: true });
