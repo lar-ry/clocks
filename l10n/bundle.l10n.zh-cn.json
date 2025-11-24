@@ -1,6 +1,6 @@
 {
-    "All alarms are turned off": "闹钟均已关闭",
-    "All alarms are turned on": "闹钟均已开启",
+    "Alarms are disable": "闹钟已禁用",
+    "Alarms are enable": "闹钟已启用",
     "Invalid time": "时间无效",
     "Local time": "本地时间"
 }

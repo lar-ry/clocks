@@ -4,7 +4,7 @@
     "alarms.items.errorMessage": "必须是 HH:MM",
     "clock.showSecond": "显示秒",
     "clock.weekday": "周格式",
-    "description": "在状态栏显示不同时区的时钟并支持设置闹钟",
+    "description": "在状态栏显示世界时钟并支持闹钟",
     "enable": "使能",
     "hour12": "12 小时制",
     "long": "长",

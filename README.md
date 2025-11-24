@@ -17,9 +17,9 @@
 
 # Clocks - 时钟
 
-Display clocks for multiple time zones in the status bar and support setting alarms
+Display world clocks in the status bar and support alarms
 
-在状态栏显示不同时区的时钟并支持设置闹钟
+在状态栏显示世界时钟并支持闹钟
 
 ## Quick Start - 使用方法
 

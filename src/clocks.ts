@@ -77,15 +77,16 @@ const update = (item: StatusBarItem) => {
       "\n\n---\n\n" +
       `${
         config.alarms.enable
-          ? "$(bell) " + l10n.t("All alarms are turned on")
-          : "$(bell-slash) " + l10n.t("All alarms are turned off")
+          ? "$(bell) " + l10n.t("Alarms are enable")
+          : "$(bell-slash) " + l10n.t("Alarms are disable")
       }  \n` +
       alarmsTips.join("  \n"),
     true
   );
   item.backgroundColor =
     config.alarms.enable &&
-    Object.keys(config.alarms.items)?.includes(nowHourMinute)
+    Object.keys(config.alarms.items)?.includes(nowHourMinute) &&
+    now.getSeconds() % 2 === 0
       ? new ThemeColor("statusBarItem.warningBackground")
       : undefined;
 };

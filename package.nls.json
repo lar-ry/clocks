@@ -4,7 +4,7 @@
     "alarms.items.errorMessage": "Must be HH:MM",
     "clock.showSecond": "Show second",
     "clock.weekday": "Weekday",
-    "description": "Display clocks for multiple time zones in the status bar and support setting alarms",
+    "description": "Display world clocks in the status bar and support alarms",
     "enable": "Enable",
     "hour12": "12 hours",
     "long": "Long",
