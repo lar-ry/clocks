@@ -21,13 +21,13 @@
     "configuration": {
       "title": "Clocks",
       "properties": {
-        "clocks.alarms.list": {
+        "clocks.alarms.items": {
           "type": "object",
-          "description": "%alarms.list%",
+          "description": "%alarms.items%",
           "propertyNames": {
             "type": "string",
             "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$",
-            "errorMessage": "%alarms.list.errorMessage%"
+            "errorMessage": "%alarms.items.errorMessage%"
           },
           "additionalProperties": {
             "type": "string"

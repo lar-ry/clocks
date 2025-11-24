@@ -54,7 +54,7 @@ const update = (item: StatusBarItem) => {
     (x: string) =>
       getTimeLocaleString({ config, time: now, timeZone: x }) + ` (${x})`
   );
-  const alarmsTips = Object.entries(config.alarms.list).map(([k, v]) => {
+  const alarmsTips = Object.entries(config.alarms.items).map(([k, v]) => {
     if (/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/.test(k)) {
       return nowHourMinute === k ? `**${k} ${v}**` : `${k} ${v}`;
     }
@@ -76,7 +76,7 @@ const update = (item: StatusBarItem) => {
   );
   item.backgroundColor =
     config.alarms.enable &&
-    Object.keys(config.alarms.list)?.includes(nowHourMinute)
+    Object.keys(config.alarms.items)?.includes(nowHourMinute)
       ? new ThemeColor("statusBarItem.warningBackground")
       : undefined;
 };

@@ -1,7 +1,7 @@
 {
     "alarms.enable": "闹钟使能",
-    "alarms.list": "闹钟列表",
-    "alarms.list.errorMessage": "必须是 HH:MM",
+    "alarms.items": "闹钟项目",
+    "alarms.items.errorMessage": "必须是 HH:MM",
     "clock.showSecond": "显示秒",
     "clock.weekday": "周格式",
     "description": "在状态栏显示不同时区的时钟并支持设置闹钟",
