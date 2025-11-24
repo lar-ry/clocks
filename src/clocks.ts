@@ -54,12 +54,20 @@ const update = (item: StatusBarItem) => {
     (x: string) =>
       getTimeLocaleString({ config, time: now, timeZone: x }) + ` (${x})`
   );
-  const alarmsTips = Object.entries(config.alarms.items).map(([k, v]) => {
-    if (/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/.test(k)) {
-      return nowHourMinute === k ? `**${k} ${v}**` : `${k} ${v}`;
-    }
-    return `~~${k} ${v} (${l10n.t("Invalid time")})~~`;
-  });
+  const alarmsTips = Object.entries(config.alarms.items)
+    .map(([k, v]) => {
+      if (/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/.test(k)) {
+        if (nowHourMinute === k) {
+          if (now.getSeconds() === 0) {
+            window.showWarningMessage(`${k} ${v}`);
+          }
+          return `${k} ${v}`;
+        }
+        return "";
+      }
+      return `~~${k} ${v} (${l10n.t("Invalid time")})~~`;
+    })
+    ?.filter((x) => x);
 
   item.text = getTimeLocaleString({ config, time: now, isText: true });
   item.tooltip = new MarkdownString(
@@ -69,10 +77,11 @@ const update = (item: StatusBarItem) => {
       "\n\n---\n\n" +
       `${
         config.alarms.enable
-          ? l10n.t("All alarms are turned on")
-          : l10n.t("All alarms are turned off")
+          ? "$(bell) " + l10n.t("All alarms are turned on")
+          : "$(bell-slash) " + l10n.t("All alarms are turned off")
       }  \n` +
-      alarmsTips.join("  \n")
+      alarmsTips.join("  \n"),
+    true
   );
   item.backgroundColor =
     config.alarms.enable &&
