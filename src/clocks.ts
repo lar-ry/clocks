@@ -10,7 +10,7 @@ import {
   ThemeColor,
   env,
 } from "vscode";
-import { solarToLunar } from "./lunar";
+import { getJieqiOffset, solarToLunar } from "./lunar";
 
 const getTimeLocaleString = ({
   config,
@@ -52,7 +52,9 @@ const update = (item: StatusBarItem) => {
   const localTimeTip =
     getTimeLocaleString({ config, time: now }) +
     ` (${l10n.t("Local time")})` +
-    `${config.showLunar ? `  \n${solarToLunar(now).toString()}` : ""}`;
+    (config.showLunar
+      ? `  \n${solarToLunar(now).toString()} ${getJieqiOffset(now)}`
+      : "");
   const worldClocksTips = config.worldClocks?.map(
     (x: string) =>
       getTimeLocaleString({ config, time: now, timeZone: x }) + ` (${x})`

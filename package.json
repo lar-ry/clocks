@@ -5,7 +5,7 @@
   "repository": "https://github.com/lar-ry/clocks",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "engines": {
     "vscode": "^1.78.0"
   },
