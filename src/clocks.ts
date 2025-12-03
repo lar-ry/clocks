@@ -10,7 +10,26 @@ import {
   ThemeColor,
   env,
 } from "vscode";
-import { getJieqiOffset, solarToLunar } from "./lunar";
+import { Lunar } from "lunar-typescript";
+
+const getJieqiOffset = (time: Date) => {
+  const jieqi = Lunar.fromDate(time).getJieQi().toString();
+  if (jieqi) {
+    return jieqi;
+  }
+  const prev = Lunar.fromDate(time).getPrevJieQi();
+  const next = Lunar.fromDate(time).getNextJieQi();
+  const prevOffset =
+    time.getTime() - new Date(prev.getSolar().toYmd()).getTime();
+  const nextOffset =
+    time.getTime() - new Date(next.getSolar().toYmd()).getTime();
+
+  if (Math.abs(prevOffset) - Math.abs(nextOffset) <= 0) {
+    return prev.toString() + `+${Math.floor(prevOffset / 86400000)}天`;
+  } else {
+    return next.toString() + `${Math.floor(nextOffset / 86400000)}天`;
+  }
+};
 
 const getTimeLocaleString = ({
   config,
@@ -53,28 +72,27 @@ const update = (item: StatusBarItem) => {
     getTimeLocaleString({ config, time: now }) +
     ` (${l10n.t("Local time")})` +
     (config.showLunar
-      ? `  \n${solarToLunar(now).toString()} ${getJieqiOffset(now)}`
+      ? `  \n${Lunar.fromDate(now).toString()} ${getJieqiOffset(now)}`
       : "");
   const worldClocksTips = config.worldClocks?.map(
     (x: string) =>
       getTimeLocaleString({ config, time: now, timeZone: x }) + ` (${x})`
   );
-  const alarmsTips = Object.entries(config.alarms.items)
-    .map(([k, v]) => {
-      if (/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/.test(k)) {
-        if (nowHourMinute === k) {
-          if (now.getSeconds() === 0) {
-            window.showWarningMessage(`${k} ${v}`);
-          }
-          return `${k} ${v}`;
-        }
-        return "";
-      }
-      return `~~${k} ${v} (${l10n.t("Invalid time")})~~`;
-    })
-    ?.filter((x) => x);
-
-  item.text = getTimeLocaleString({ config, time: now, isText: true });
+  item.text = "";
+  if (
+    config.alarms.enable &&
+    Object.keys(config.alarms.items)?.includes(nowHourMinute)
+  ) {
+    item.backgroundColor =
+      now.getSeconds() % 2 === 0
+        ? new ThemeColor("statusBarItem.warningBackground")
+        : undefined;
+    item.text = config.alarms.items[nowHourMinute];
+  } else {
+    item.backgroundColor = undefined;
+  }
+  item.text += config.alarms.enable ? "$(bell)" : "$(bell-slash)";
+  item.text += getTimeLocaleString({ config, time: now, isText: true });
   item.tooltip = new MarkdownString(
     localTimeTip +
       "\n\n---\n\n" +
@@ -84,16 +102,9 @@ const update = (item: StatusBarItem) => {
         config.alarms.enable
           ? "$(bell) " + l10n.t("Alarms are enable")
           : "$(bell-slash) " + l10n.t("Alarms are disable")
-      }  \n` +
-      alarmsTips.join("  \n"),
+      }  \n`,
     true
   );
-  item.backgroundColor =
-    config.alarms.enable &&
-    Object.keys(config.alarms.items)?.includes(nowHourMinute) &&
-    now.getSeconds() % 2 === 0
-      ? new ThemeColor("statusBarItem.warningBackground")
-      : undefined;
 };
 
 let currentClockDispose: { dispose(): void } | null = null;
