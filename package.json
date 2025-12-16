@@ -5,12 +5,23 @@
   "repository": "https://github.com/lar-ry/clocks",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "engines": {
     "vscode": "^1.78.0"
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "alarm",
+    "clock",
+    "jieqi",
+    "lunar",
+    "time",
+    "timezone",
+    "world-clocks",
+    "节气",
+    "农历"
   ],
   "activationEvents": [
     "onStartupFinished"
