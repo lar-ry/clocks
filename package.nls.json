@@ -10,6 +10,12 @@
     "clock.weekday.short": "Short",
     "description": "Display world clocks in the status bar and support alarms",
     "enable": "Enable",
+    "holiday.dayNumber": "Holiday day number",
+    "holiday.name": "Holiday name",
+    "holiday.showHoliday": "Show holiday",
+    "holiday.startDate": "Holiday start date",
+    "holiday.totalDays": "Holiday total days",
+    "holiday.workDays": "Holiday work days",
     "hour12": "12 hours",
     "showLunar": "Show lunar",
     "worldClocks": "World clocks"

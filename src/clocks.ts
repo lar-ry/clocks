@@ -11,6 +11,15 @@ import {
   env,
 } from "vscode";
 import { Lunar } from "lunar-typescript";
+import { start } from "repl";
+
+interface Holiday {
+  name: string;
+  startDate: string;
+  dayNumber: number;
+  totalDays: number;
+  workDays?: string[];
+}
 
 const getJieqiOffset = (time: Date) => {
   const jieqi = Lunar.fromDate(time).getJieQi().toString();
@@ -28,6 +37,46 @@ const getJieqiOffset = (time: Date) => {
     return prev.toString() + `+${Math.floor(prevOffset / 86400000)}天`;
   } else {
     return next.toString() + `${Math.floor(nextOffset / 86400000)}天`;
+  }
+};
+
+const getHoliday = ({
+  config,
+  time,
+}: {
+  config: WorkspaceConfiguration;
+  time: Date;
+}) => {
+  if (config.holiday.showHoliday) {
+    return config.holiday.items?.map(
+      (x: Holiday) =>
+        l10n.t(
+          "{name} in {offsetDays}-day offset, from {startDate}, after {dayNumber} days, {week}, total {totalDays} days",
+          {
+            name: x.name,
+            week: new Date(
+              new Date().getTime() + 86400000 * (x.dayNumber - 1)
+            ).toLocaleString(env.language, { weekday: "short" }),
+            startDate: new Date(x.startDate).toLocaleString(env.language, {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }),
+            totalDays: x.totalDays,
+            dayNumber: x.dayNumber,
+            offsetDays: Math.abs(
+              Math.ceil(
+                (new Date(x.startDate).getTime() - time.getTime()) / 86400000
+              )
+            ),
+          }
+        ) +
+        (x.workDays?.length
+          ? l10n.t(", {workDays} work", { workDays: x.workDays?.join("/") })
+          : "")
+    );
+  } else {
+    return [];
   }
 };
 
@@ -97,6 +146,8 @@ const update = (item: StatusBarItem) => {
     localTimeTip +
       "\n\n---\n\n" +
       worldClocksTips.join("  \n") +
+      "\n\n---\n\n" +
+      getHoliday({ time: now, config }).join("  \n") +
       "\n\n---\n\n" +
       `${
         config.alarms.enable

@@ -1,4 +1,6 @@
 {
+    ", {workDays} work": ", {workDays}上班",
+    "{name} in {offsetDays}-day offset, from {startDate}, after {dayNumber} days, {week}, total {totalDays} days": "{name}假期距今{offsetDays}天, 从{startDate}开始, 第{dayNumber}天, {week}, 共{totalDays}天",
     "Alarms are disable": "闹钟已禁用",
     "Alarms are enable": "闹钟已启用",
     "Invalid time": "时间无效",

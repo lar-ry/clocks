@@ -10,6 +10,12 @@
     "clock.weekday.short": "短",
     "description": "在状态栏显示世界时钟并支持闹钟",
     "enable": "使能",
+    "holiday.dayNumber": "假日在第几天",
+    "holiday.name": "假期名称",
+    "holiday.showHoliday": "显示假期",
+    "holiday.startDate": "假期起始日",
+    "holiday.totalDays": "假期天数",
+    "holiday.workDays": "工作日",
     "hour12": "12 小时制",
     "showLunar": "显示农历",
     "worldClocks": "世界时钟"
