@@ -11,7 +11,6 @@ import {
   env,
 } from "vscode";
 import { Lunar } from "lunar-typescript";
-import { start } from "repl";
 
 interface Holiday {
   name: string;
@@ -50,12 +49,13 @@ const getHoliday = ({
   if (config.holiday.showHoliday) {
     return config.holiday.items?.map(
       (x: Holiday) =>
+        "$(calendar) " +
         l10n.t(
           "{name} in {offsetDays}-day offset, from {startDate}, after {dayNumber} days, {week}, total {totalDays} days",
           {
             name: x.name,
             week: new Date(
-              new Date().getTime() + 86400000 * (x.dayNumber - 1)
+              new Date(x.startDate).getTime() + 86400000 * (x.dayNumber - 1)
             ).toLocaleString(env.language, { weekday: "short" }),
             startDate: new Date(x.startDate).toLocaleString(env.language, {
               year: "numeric",
@@ -118,14 +118,21 @@ const update = (item: StatusBarItem) => {
     hour12: false,
   });
   const localTimeTip =
+    "$(location) " +
     getTimeLocaleString({ config, time: now }) +
     ` (${l10n.t("Local time")})` +
     (config.showLunar
-      ? `  \n${Lunar.fromDate(now).toString()} ${getJieqiOffset(now)}`
+      ? `  \n$(location) ${Lunar.fromDate(now).toString()} ${getJieqiOffset(
+          now
+        )}` +
+        `  \n$(pass) 宜: ${Lunar.fromDate(now).getDayYi().join(" ")}` +
+        `  \n$(circle-slash) 忌: ${Lunar.fromDate(now).getDayJi().join(" ")}`
       : "");
   const worldClocksTips = config.worldClocks?.map(
     (x: string) =>
-      getTimeLocaleString({ config, time: now, timeZone: x }) + ` (${x})`
+      "$(globe) " +
+      getTimeLocaleString({ config, time: now, timeZone: x }) +
+      ` (${x})`
   );
   item.text = "";
   if (
