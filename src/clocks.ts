@@ -15,11 +15,10 @@ import { Lunar } from "lunar-typescript";
 interface Holiday {
   name: string;
   startDate: string;
-  dayNumber: number;
-  totalDays: number;
-  workDays?: string[];
+  detail?: { weekday: string; isWork?: boolean; isHoliday?: boolean }[];
 }
 
+let alarmsEnable = true;
 const getJieqiOffset = (time: Date) => {
   const jieqi = Lunar.fromDate(time).getJieQi().toString();
   if (jieqi) {
@@ -51,29 +50,30 @@ const getHoliday = ({
       (x: Holiday) =>
         "$(calendar) " +
         l10n.t(
-          "{name} in {offsetDays}-day offset, from {startDate}, after {dayNumber} days, {week}, total {totalDays} days",
+          "{name} in {offsetDays}-day offset, from {startDate}, {detail}",
           {
             name: x.name,
-            week: new Date(
-              new Date(x.startDate).getTime() + 86400000 * (x.dayNumber - 1)
-            ).toLocaleString(env.language, { weekday: "short" }),
             startDate: new Date(x.startDate).toLocaleString(env.language, {
               year: "numeric",
               month: "long",
               day: "numeric",
             }),
-            totalDays: x.totalDays,
-            dayNumber: x.dayNumber,
             offsetDays: Math.abs(
               Math.ceil(
                 (new Date(x.startDate).getTime() - time.getTime()) / 86400000
               )
             ),
+            detail: x?.detail
+              ?.map((y) =>
+                y.isWork
+                  ? y.weekday
+                  : y.isHoliday
+                  ? `<a href="command:larry-lan.clocks.nop" title=""><b>(${y.weekday})</b></a>`
+                  : `<a href="command:larry-lan.clocks.nop" title="">${y.weekday}</a>`
+              )
+              ?.join(""),
           }
-        ) +
-        (x.workDays?.length
-          ? l10n.t(", {workDays} work", { workDays: x.workDays?.join("/") })
-          : "")
+        )
     );
   } else {
     return [];
@@ -106,11 +106,6 @@ const getTimeLocaleString = ({
 
 const update = (item: StatusBarItem) => {
   const config = workspace.getConfiguration("clocks");
-  if (!config.enable) {
-    item.hide();
-    return;
-  }
-  item.show();
   const now = new Date();
   const nowHourMinute = now.toLocaleString(undefined, {
     hour: "2-digit",
@@ -122,9 +117,8 @@ const update = (item: StatusBarItem) => {
     getTimeLocaleString({ config, time: now }) +
     ` (${l10n.t("Local time")})` +
     (config.showLunar
-      ? `  \n$(location) ${Lunar.fromDate(now).toString()} ${getJieqiOffset(
-          now
-        )}` +
+      ? `  \n$(location) ${Lunar.fromDate(now).toString()} ` +
+        getJieqiOffset(now) +
         `  \n$(pass) 宜: ${Lunar.fromDate(now).getDayYi().join(" ")}` +
         `  \n$(circle-slash) 忌: ${Lunar.fromDate(now).getDayJi().join(" ")}`
       : "");
@@ -135,34 +129,37 @@ const update = (item: StatusBarItem) => {
       ` (${x})`
   );
   item.text = "";
-  if (
-    config.alarms.enable &&
-    Object.keys(config.alarms.items)?.includes(nowHourMinute)
-  ) {
-    item.backgroundColor =
-      now.getSeconds() % 2 === 0
-        ? new ThemeColor("statusBarItem.warningBackground")
-        : undefined;
-    item.text = config.alarms.items[nowHourMinute];
+  const tooltip = new MarkdownString(undefined, true);
+  tooltip.isTrusted = true;
+  tooltip.supportHtml = true;
+  tooltip.appendMarkdown(localTimeTip);
+  tooltip.appendMarkdown("\n\n---\n\n");
+  tooltip.appendMarkdown(worldClocksTips.join("  \n"));
+  tooltip.appendMarkdown("\n\n---\n\n");
+  tooltip.appendMarkdown(getHoliday({ time: now, config }).join("  \n"));
+  tooltip.appendMarkdown("\n\n---\n\n");
+  if (Object.keys(config.alarms).length) {
+    if (alarmsEnable && Object.keys(config.alarms)?.includes(nowHourMinute)) {
+      item.backgroundColor =
+        now.getSeconds() % 2 === 0
+          ? new ThemeColor("statusBarItem.warningBackground")
+          : undefined;
+      item.text = config.alarms[nowHourMinute];
+    } else {
+      item.backgroundColor = undefined;
+    }
+    item.text += alarmsEnable ? "$(bell)" : "$(bell-slash)";
+    tooltip.appendMarkdown(
+      alarmsEnable
+        ? "$(bell) " + l10n.t("Alarms are enable")
+        : "$(bell-slash) " + l10n.t("Alarms are disable")
+    );
   } else {
     item.backgroundColor = undefined;
   }
-  item.text += config.alarms.enable ? "$(bell)" : "$(bell-slash)";
   item.text += getTimeLocaleString({ config, time: now, isText: true });
-  item.tooltip = new MarkdownString(
-    localTimeTip +
-      "\n\n---\n\n" +
-      worldClocksTips.join("  \n") +
-      "\n\n---\n\n" +
-      getHoliday({ time: now, config }).join("  \n") +
-      "\n\n---\n\n" +
-      `${
-        config.alarms.enable
-          ? "$(bell) " + l10n.t("Alarms are enable")
-          : "$(bell-slash) " + l10n.t("Alarms are disable")
-      }  \n`,
-    true
-  );
+  item.tooltip = tooltip;
+  item.show();
 };
 
 let currentClockDispose: { dispose(): void } | null = null;
@@ -198,20 +195,28 @@ const startClock = (item: StatusBarItem): { dispose(): void } => {
     },
   };
 };
+
+let statusBarItemRef: StatusBarItem | undefined;
+
+export function alarmsToggle() {
+  alarmsEnable = !alarmsEnable;
+  if (!statusBarItemRef) {
+    return;
+  }
+  update(statusBarItemRef);
+}
+
 export function createStatusBarClocks(context: ExtensionContext) {
   const statusBarItem = window.createStatusBarItem(
     StatusBarAlignment.Right,
     -Infinity
   );
-
+  statusBarItemRef = statusBarItem;
   statusBarItem.command = {
-    command: "workbench.action.openSettings",
-    title: "openSettings",
-    arguments: ["@ext:larry-lan.clocks"],
+    command: "larry-lan.clocks.alarmsToggle",
+    title: l10n.t("Alarm toggle"),
   };
-
   currentClockDispose = startClock(statusBarItem);
-
   context.subscriptions.push(
     workspace.onDidChangeConfiguration((e) => {
       if (e.affectsConfiguration("clocks")) {
@@ -221,6 +226,5 @@ export function createStatusBarClocks(context: ExtensionContext) {
     })
   );
   context.subscriptions.push(statusBarItem);
-
   return statusBarItem;
 }

@@ -5,7 +5,7 @@
   "repository": "https://github.com/lar-ry/clocks",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -32,16 +32,28 @@
   "main": "./out/extension.js",
   "l10n": "./l10n",
   "contributes": {
+    "commands": [
+      {
+        "command": "larry-lan.clocks.alarmsToggle",
+        "title": "%alarmsToggle%",
+        "category": "%clocks%"
+      },
+      {
+        "command": "larry-lan.clocks.nop",
+        "title": "%nop%",
+        "category": "%clocks%"
+      }
+    ],
     "configuration": {
       "title": "Clocks",
       "properties": {
-        "clocks.alarms.items": {
+        "clocks.alarms": {
           "type": "object",
-          "description": "%alarms.items%",
+          "description": "%alarms%",
           "propertyNames": {
             "type": "string",
             "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$",
-            "errorMessage": "%alarms.items.errorMessage%"
+            "errorMessage": "%alarms.errorMessage%"
           },
           "additionalProperties": {
             "type": "string"
@@ -72,97 +84,213 @@
                 "pattern": "^20[2-9][0-9]-[01][0-9]-[0-3][0-9]$",
                 "description": "%holiday.startDate%"
               },
-              "dayNumber": {
-                "type": "number",
-                "description": "%holiday.dayNumber%"
-              },
-              "totalDays": {
-                "type": "number",
-                "description": "%holiday.totalDays%"
-              },
-              "workDays": {
+              "detail": {
                 "type": "array",
                 "items": {
-                  "type": "string"
-                },
-                "description": "%holiday.workDays%"
-              }
-            },
-            "required": [
-              "name",
-              "startDate",
-              "dayNumber",
-              "totalDays"
-            ]
+                  "type": "object",
+                  "properties": {
+                    "weekday": {
+                      "type": "string",
+                      "description": "%holiday.detail.weekday%"
+                    },
+                    "isHoliday": {
+                      "type": "boolean",
+                      "description": "%holiday.detail.isHoliday%",
+                      "default": false
+                    },
+                    "isWork": {
+                      "type": "boolean",
+                      "description": "%holiday.detail.isWork%",
+                      "default": false
+                    },
+                    "required": [
+                      "weekday"
+                    ]
+                  },
+                  "description": "%holiday.detail%"
+                }
+              },
+              "required": [
+                "name",
+                "startDate",
+                "detail"
+              ]
+            }
           },
           "default": [
             {
               "name": "元旦",
               "startDate": "2026-01-01",
-              "dayNumber": 1,
-              "totalDays": 3,
-              "workDays": [
-                "下周日"
+              "detail": [
+                {
+                  "weekday": "四",
+                  "isHoliday": true
+                },
+                {
+                  "weekday": "五"
+                },
+                {
+                  "weekday": "六"
+                },
+                {
+                  "weekday": "日",
+                  "isWork": true
+                }
               ]
             },
             {
               "name": "春节",
               "startDate": "2026-02-15",
-              "dayNumber": 3,
-              "totalDays": 9,
-              "workDays": [
-                "上周六",
-                "下周六"
+              "detail": [
+                {
+                  "weekday": "六",
+                  "isWork": true
+                },
+                {
+                  "weekday": "日"
+                },
+                {
+                  "weekday": "一"
+                },
+                {
+                  "weekday": "二",
+                  "isHoliday": true
+                },
+                {
+                  "weekday": "三"
+                },
+                {
+                  "weekday": "四"
+                },
+                {
+                  "weekday": "五"
+                },
+                {
+                  "weekday": "六"
+                },
+                {
+                  "weekday": "日"
+                },
+                {
+                  "weekday": "一"
+                },
+                {
+                  "weekday": "六",
+                  "isWork": true
+                }
               ]
             },
             {
               "name": "清明",
               "startDate": "2026-04-04",
-              "dayNumber": 2,
-              "totalDays": 3
+              "detail": [
+                {
+                  "weekday": "六"
+                },
+                {
+                  "weekday": "日",
+                  "isHoliday": true
+                },
+                {
+                  "weekday": "一"
+                }
+              ]
             },
             {
               "name": "劳动",
               "startDate": "2026-05-01",
-              "dayNumber": 1,
-              "totalDays": 5,
-              "workDays": [
-                "下周六"
+              "detail": [
+                {
+                  "weekday": "五",
+                  "isHoliday": true
+                },
+                {
+                  "weekday": "六"
+                },
+                {
+                  "weekday": "日"
+                },
+                {
+                  "weekday": "一"
+                },
+                {
+                  "weekday": "二"
+                },
+                {
+                  "weekday": "六",
+                  "isWork": true
+                }
               ]
             },
             {
               "name": "端午",
               "startDate": "2026-06-19",
-              "dayNumber": 1,
-              "totalDays": 3
+              "detail": [
+                {
+                  "weekday": "五",
+                  "isHoliday": true
+                },
+                {
+                  "weekday": "六"
+                },
+                {
+                  "weekday": "日"
+                }
+              ]
             },
             {
               "name": "中秋",
               "startDate": "2026-09-25",
-              "dayNumber": 1,
-              "totalDays": 3
+              "detail": [
+                {
+                  "weekday": "五",
+                  "isHoliday": true
+                },
+                {
+                  "weekday": "六"
+                },
+                {
+                  "weekday": "日"
+                }
+              ]
             },
             {
               "name": "国庆",
               "startDate": "2026-10-01",
-              "dayNumber": 1,
-              "totalDays": 7,
-              "workDays": [
-                "上周日",
-                "下周六"
+              "detail": [
+                {
+                  "weekday": "日",
+                  "isWork": true
+                },
+                {
+                  "weekday": "四",
+                  "isHoliday": true
+                },
+                {
+                  "weekday": "五"
+                },
+                {
+                  "weekday": "六"
+                },
+                {
+                  "weekday": "日"
+                },
+                {
+                  "weekday": "一"
+                },
+                {
+                  "weekday": "二"
+                },
+                {
+                  "weekday": "三"
+                },
+                {
+                  "weekday": "六",
+                  "isWork": true
+                }
               ]
             }
           ]
-        },
-        "clocks.alarms.enable": {
-          "type": "boolean",
-          "description": "%alarms.enable%",
-          "default": true
-        },
-        "clocks.enable": {
-          "type": "boolean",
-          "description": "%enable%",
-          "default": true
         },
         "clocks.clock.weekday": {
           "type": "string",

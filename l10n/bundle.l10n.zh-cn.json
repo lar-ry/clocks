@@ -1,8 +1,10 @@
 {
     ", {workDays} work": ", {workDays}上班",
-    "{name} in {offsetDays}-day offset, from {startDate}, after {dayNumber} days, {week}, total {totalDays} days": "{name}假期距今{offsetDays}天, 从{startDate}开始, 第{dayNumber}天, {week}, 共{totalDays}天",
+    "{name} in {offsetDays}-day offset, from {startDate}, {detail}": "{name}假期始于{startDate}, 距今{offsetDays}天, {detail}",
     "Alarms are disable": "闹钟已禁用",
     "Alarms are enable": "闹钟已启用",
     "Invalid time": "时间无效",
-    "Local time": "本地时间"
+    "Local time": "本地时间",
+    "Alarm toggle": "闹钟开关",
+    "Open clocks settings": "打开 Clocks 插件设置"
 }
