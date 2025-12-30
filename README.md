@@ -27,14 +27,16 @@ After installing the extension, the current time will appear on the right side o
 
 安装插件后, 在状态栏右侧即可显示时钟
 
+![sample](https://github.com/lar-ry/clocks/raw/HEAD/assets/sample.png)
+
+![示例](https://github.com/lar-ry/clocks/raw/HEAD/assets/sample-zh-cn.png)
+
 ## Setting - 设置
 
-- `enable`: Enable - 使能
 - `hour12`: 12 hours - 12 小时制
 - `showLunar`: Show lunar - 显示农历
 - `showHoliday`: Show holiday - 显示假期
 - `worldClocks`: World clocks - 世界时钟
-- `alarms.items`: Alarms items - 闹钟项目
-- `alarms.enable`: Alarms enable - 闹钟使能
+- `alarms`: Alarms - 闹钟
 - `clock.weekday`: Weekday - 周格式
 - `clock.showSecond`: Show second - 显示秒
