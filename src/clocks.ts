@@ -46,11 +46,18 @@ const getHoliday = ({
   time: Date;
 }) => {
   if (config.holiday.showHoliday) {
-    return config.holiday.items?.map(
-      (x: Holiday) =>
+    return config.holiday.items?.map((x: Holiday) => {
+      const offsetDays = Math.ceil(
+        (new Date(x.startDate).getTime() - time.getTime()) / 86400000
+      );
+      return (
         "$(calendar) " +
         l10n.t(
-          "{name} in {offsetDays}-day offset, from {startDate}, {detail}",
+          offsetDays >= 1
+            ? "{name} started on {startDate}, and {offsetDays} days remain, {detail}"
+            : offsetDays < 0
+            ? "{name} started on {startDate}, and {offsetDays} days have passed, {detail}"
+            : "{name} started on {startDate}, which is today, {detail}",
           {
             name: x.name,
             startDate: new Date(x.startDate).toLocaleString(env.language, {
@@ -58,11 +65,7 @@ const getHoliday = ({
               month: "long",
               day: "numeric",
             }),
-            offsetDays: Math.abs(
-              Math.ceil(
-                (new Date(x.startDate).getTime() - time.getTime()) / 86400000
-              )
-            ),
+            offsetDays: Math.abs(offsetDays),
             detail: x?.detail
               ?.map((y) =>
                 y.isWork
@@ -74,7 +77,8 @@ const getHoliday = ({
               ?.join(""),
           }
         )
-    );
+      );
+    });
   } else {
     return [];
   }
