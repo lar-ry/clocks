@@ -31,11 +31,19 @@ const getJieqiOffset = (time: Date) => {
   const nextOffset =
     time.getTime() - new Date(next.getSolar().toYmd()).getTime();
 
-  if (Math.abs(prevOffset) - Math.abs(nextOffset) <= 0) {
-    return prev.toString() + `+${Math.floor(prevOffset / 86400000)}天`;
-  } else {
-    return next.toString() + `${Math.floor(nextOffset / 86400000)}天`;
+  if (Math.abs(prevOffset) - Math.abs(nextOffset) === 0) {
+    return l10n.t("Today is {jieqi}", { jieqi: prev.toString() });
   }
+  if (Math.abs(prevOffset) - Math.abs(nextOffset) <= 0) {
+    return l10n.t("{jieqi} {offsetDays} days have passed", {
+      jieqi: prev.toString(),
+      offsetDays: Math.floor(prevOffset / 86400000),
+    });
+  }
+  return l10n.t("{jieqi} {offsetDays} days remain", {
+    jieqi: next.toString(),
+    offsetDays: -Math.floor(nextOffset / 86400000),
+  });
 };
 
 const getHoliday = ({
@@ -48,7 +56,7 @@ const getHoliday = ({
   if (config.holiday.showHoliday) {
     return config.holiday.items?.map((x: Holiday) => {
       const offsetDays = Math.ceil(
-        (new Date(x.startDate).getTime() - time.getTime()) / 86400000
+        (new Date(x.startDate).getTime() - time.getTime()) / 86400000,
       );
       return (
         "$(calendar) " +
@@ -56,8 +64,8 @@ const getHoliday = ({
           offsetDays >= 1
             ? "{name} started on {startDate}, and {offsetDays} days remain, {detail}"
             : offsetDays < 0
-            ? "{name} started on {startDate}, and {offsetDays} days have passed, {detail}"
-            : "{name} started on {startDate}, which is today, {detail}",
+              ? "{name} started on {startDate}, and {offsetDays} days have passed, {detail}"
+              : "{name} started on {startDate}, which is today, {detail}",
           {
             name: x.name,
             startDate: new Date(x.startDate).toLocaleString(env.language, {
@@ -71,11 +79,11 @@ const getHoliday = ({
                 y.isWork
                   ? y.weekday
                   : y.isHoliday
-                  ? `<a href="command:larry-lan.clocks.nop" title=""><b>(${y.weekday})</b></a>`
-                  : `<a href="command:larry-lan.clocks.nop" title="">${y.weekday}</a>`
+                    ? `<a href="command:larry-lan.clocks.nop" title=""><b>(${y.weekday})</b></a>`
+                    : `<a href="command:larry-lan.clocks.nop" title="">${y.weekday}</a>`,
               )
               ?.join(""),
-          }
+          },
         )
       );
     });
@@ -130,7 +138,7 @@ const update = (item: StatusBarItem) => {
     (x: string) =>
       "$(globe) " +
       getTimeLocaleString({ config, time: now, timeZone: x }) +
-      ` (${x})`
+      ` (${x})`,
   );
   item.text = "";
   const tooltip = new MarkdownString(undefined, true);
@@ -156,7 +164,7 @@ const update = (item: StatusBarItem) => {
     tooltip.appendMarkdown(
       alarmsEnable
         ? "$(bell) " + l10n.t("Alarms are enable")
-        : "$(bell-slash) " + l10n.t("Alarms are disable")
+        : "$(bell-slash) " + l10n.t("Alarms are disable"),
     );
   } else {
     item.backgroundColor = undefined;
@@ -213,7 +221,7 @@ export function alarmsToggle() {
 export function createStatusBarClocks(context: ExtensionContext) {
   const statusBarItem = window.createStatusBarItem(
     StatusBarAlignment.Right,
-    -Infinity
+    -Infinity,
   );
   statusBarItemRef = statusBarItem;
   statusBarItem.command = {
@@ -227,7 +235,7 @@ export function createStatusBarClocks(context: ExtensionContext) {
         currentClockDispose?.dispose();
         currentClockDispose = startClock(statusBarItem);
       }
-    })
+    }),
   );
   context.subscriptions.push(statusBarItem);
   return statusBarItem;

@@ -1,12 +1,15 @@
 {
     ", {workDays} work": ", {workDays}上班",
-    "{name} started on {startDate}, and {offsetDays} days have passed, {detail}": "{name}假期始于{startDate}, 已过{offsetDays}天, {detail}",
-    "{name} started on {startDate}, and {offsetDays} days remain, {detail}": "{name}假期始于{startDate}, 还有{offsetDays}天, {detail}",
+    "{name} started on {startDate}, and {offsetDays} days have passed, {detail}": "{name}假期始于{startDate}, {offsetDays}天前, {detail}",
+    "{name} started on {startDate}, and {offsetDays} days remain, {detail}": "{name}假期始于{startDate}, {offsetDays}天后, {detail}",
     "Alarm toggle": "闹钟开关",
     "Alarms are disable": "闹钟已禁用",
     "Alarms are enable": "闹钟已启用",
     "Invalid time": "时间无效",
     "Local time": "本地时间",
+    "Today is {jieqi}": "今日{jieqi}",
+    "{jieqi} {offsetDays} days have passed": "{offsetDays}天前{jieqi}",
+    "{jieqi} {offsetDays} days remain": "{offsetDays}天后{jieqi}",
     "Open clocks settings": "打开 Clocks 插件设置",
     "{name} started on {startDate}, which is today, {detail}": "{name}假期始于{startDate}, 就是今天, {detail}"
 }
